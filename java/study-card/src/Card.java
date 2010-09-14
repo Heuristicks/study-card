@@ -13,18 +13,16 @@ public class Card {
         side = true;    //When side is true, visible face is the front
     }
 
-    public void SetFrontCharacters(String characters)
-    {
+    public void SetFrontCharacters(String characters) {
         frontChars = characters;
     }
 
-    public void SetBackCharacters(String characters)
-    {
+    public void SetBackCharacters(String characters) {
         backChars = characters;
     }
 
-    public void Flip(boolean front)
-    {
+    public void Flip(boolean front) {
         side = front;
     }
+
 }
