@@ -20,7 +20,7 @@ public class Interface {
         private JMenu stackMenu;
             private JMenuItem newStack;
             private JMenuItem loadStack;
-            private JMenuItem currentStack;
+            private JMenu currentStack;
         private JMenu cardMenu;
             private JMenuItem newCard;
             private JMenuItem deleteCard;
@@ -28,6 +28,7 @@ public class Interface {
             private JMenuItem startTimer;
             private JMenuItem stopTimer;
         private JMenu optionMenu;
+    private VCard cardDisplay;
 
     public Interface() {
         setUpComponents();
@@ -40,7 +41,7 @@ public class Interface {
                 stackMenu = new JMenu("Stack");
                     newStack = new JMenuItem("New");
                     loadStack = new JMenuItem("Load");
-                    currentStack = new JMenuItem("Current Cards");
+                    currentStack = new JMenu("Current Cards");
                 cardMenu = new JMenu("Card");
                     newCard = new JMenuItem("New");
                     deleteCard = new JMenuItem("Delete Current");
@@ -49,6 +50,7 @@ public class Interface {
                     stopTimer = new JMenuItem("Stop");
                 optionMenu = new JMenu("Options");
         visualFrame = new JPanel();
+            cardDisplay = new VCard();
 
         mainLayout = new BorderLayout();
 
@@ -63,19 +65,28 @@ public class Interface {
                 stackMenu.add(currentStack);
             menuBar.add(cardMenu);
                 cardMenu.add(newCard);
+                    newCard.addActionListener(new PopupAction());
                 cardMenu.add(deleteCard);
             menuBar.add(timerMenu);
                 timerMenu.add(startTimer);
                 timerMenu.add(stopTimer);
             menuBar.add(optionMenu);
+
+        mainLayout = new BorderLayout();
+        visualFrame.setLayout(mainLayout);
+        
+        visualFrame.add(cardDisplay,BorderLayout.CENTER);
     }
+
 
     private void setUpLayout() {
         mainWindow.setPreferredSize(new Dimension(640,480));
+        mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public void run() {
+    public boolean run() {
         mainWindow.pack();
         mainWindow.setVisible(true);
+        return true;
     }
 }

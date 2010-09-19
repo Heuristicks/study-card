@@ -14,6 +14,4 @@ public class Stack {
     public void AddToStack(Card card) {
         cards.add(card);
     }
-
-
 }
