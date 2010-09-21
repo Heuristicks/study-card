@@ -28,6 +28,10 @@ public class Card {
         return backChars;
     }
 
+    public boolean Front() {
+        return side;
+    }
+
     public void Flip(boolean front) {
         side = front;
     }

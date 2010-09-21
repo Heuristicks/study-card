@@ -18,4 +18,20 @@ public class VCard extends JPanel {
     public Card GetCard() {
         return thisCard;
     }
+    
+    public void Update() {
+        String text;
+        if(thisCard.Front()) {
+            text = thisCard.GetFrontCharacters();
+        }
+        else {
+            text =  thisCard.GetBackCharacters();
+        }
+        placeholder.setText(text);
+    }
+
+    public void NewCard(Card card) {
+        //Need a save to stack function here
+        thisCard = card;
+    }
 }

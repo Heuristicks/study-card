@@ -23,6 +23,7 @@ public class Interface {
             private JMenu currentStack;
         private JMenu cardMenu;
             private JMenuItem newCard;
+            private JMenuItem editCard;
             private JMenuItem deleteCard;
         private JMenu timerMenu;
             private JMenuItem startTimer;
@@ -44,6 +45,7 @@ public class Interface {
                     currentStack = new JMenu("Current Cards");
                 cardMenu = new JMenu("Card");
                     newCard = new JMenuItem("New");
+                    editCard = new JMenuItem("Edit");
                     deleteCard = new JMenuItem("Delete Current");
                 timerMenu = new JMenu("Timer");
                     startTimer = new JMenuItem("Start");
@@ -65,7 +67,9 @@ public class Interface {
                 stackMenu.add(currentStack);
             menuBar.add(cardMenu);
                 cardMenu.add(newCard);
-                    newCard.addActionListener(new PopupAction());
+                    newCard.addActionListener(new PopupAction(PopupType.CARD_CREATE,cardDisplay));
+                cardMenu.add(editCard);
+                    editCard.addActionListener(new PopupAction(PopupType.CARD_EDIT,cardDisplay));
                 cardMenu.add(deleteCard);
             menuBar.add(timerMenu);
                 timerMenu.add(startTimer);
@@ -82,6 +86,7 @@ public class Interface {
     private void setUpLayout() {
         mainWindow.setPreferredSize(new Dimension(640,480));
         mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainWindow.addKeyListener(new KeyAction(cardDisplay));
     }
 
     public boolean run() {
