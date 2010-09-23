@@ -1,5 +1,10 @@
 import javax.swing.JPanel;
-import javax.swing.JLabel;
+import java.awt.Graphics;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
+
 /**
  *
  * @author Matt
@@ -7,12 +12,9 @@ import javax.swing.JLabel;
 public class VCard extends JPanel {
 
     private Card thisCard;
-    private JLabel placeholder;     //Eventually implementing an OpenGL graphic to display card contents
 
     public VCard() {
         thisCard = new Card();
-        placeholder = new JLabel(thisCard.GetFrontCharacters());
-        this.add(placeholder);
     }
 
     public Card GetCard() {
@@ -20,18 +22,40 @@ public class VCard extends JPanel {
     }
     
     public void Update() {
-        String text;
+        repaint();
+    }
+
+    public void NewCard() {
+        //Need a save to stack function here
+        thisCard = new Card();
+    }
+
+    private void paintBackground(Graphics g) {
+        g.setColor(Color.gray);
+        g.fillRect(getX(), getY(), getWidth(), getHeight());
+    }
+
+    private void paintCard(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(getX()*(3/2), getY()*(3/2), getWidth()/2, getHeight()/2);
+        g.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        g.setColor(Color.black);
+        String text = null;
         if(thisCard.Front()) {
-            text = thisCard.GetFrontCharacters();
+            text = thisCard.GetFrontCharacters();  
         }
         else {
             text =  thisCard.GetBackCharacters();
         }
-        placeholder.setText(text);
+        if(text != null)
+            g.drawString(text, getX() + 170, getY()+ 110);
+        g.setColor(null);
     }
+    
+    @Override
 
-    public void NewCard(Card card) {
-        //Need a save to stack function here
-        thisCard = card;
+    public void paint(Graphics g) {
+        paintBackground(g);
+        paintCard(g);
     }
 }

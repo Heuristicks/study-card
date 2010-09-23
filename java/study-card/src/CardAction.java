@@ -17,8 +17,8 @@ public class CardAction implements ActionListener {
         vCard = visualCard;
         if(type == PopupType.CARD_CREATE)
         {
-            card = new Card();
-            vCard.NewCard(card);
+            vCard.NewCard();
+            card = vCard.GetCard();
         }
         else
             card = vCard.GetCard();
