@@ -29,7 +29,7 @@ public class PopupAction implements ActionListener {
             addBoxComponent(frontText = new JTextField("Front"),thisWindow);
             addBoxComponent(backText = new JTextField("Back"),thisWindow);
             addBoxComponent(button = new JButton("Create"),thisWindow);
-            button.addActionListener(new CardAction(frontText,backText,visualCard,PopupType.CARD_CREATE));
+            button.addActionListener(new CardAction(frontText,backText,visualCard,thisWindow,PopupType.CARD_CREATE));
         }
         else if(type == PopupType.CARD_EDIT) {
             thisWindow = new JFrame("Edit");
@@ -37,7 +37,7 @@ public class PopupAction implements ActionListener {
             addBoxComponent(frontText = new JTextField(visualCard.GetCard().GetFrontCharacters()),thisWindow);
             addBoxComponent(backText = new JTextField(visualCard.GetCard().GetBackCharacters()),thisWindow);
             addBoxComponent(button = new JButton("Edit"),thisWindow);
-            button.addActionListener(new CardAction(frontText,backText,visualCard,PopupType.CARD_EDIT));
+            button.addActionListener(new CardAction(frontText,backText,visualCard,thisWindow,PopupType.CARD_EDIT));
         }
         
         thisWindow.setSize(new Dimension(200,100));

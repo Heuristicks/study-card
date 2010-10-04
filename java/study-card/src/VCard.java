@@ -12,9 +12,11 @@ import java.awt.Dimension;
 public class VCard extends JPanel {
 
     private Card thisCard;
+    public Stack theseCards;
 
     public VCard() {
         thisCard = new Card();
+        theseCards.AddToStack(thisCard);
     }
 
     public Card GetCard() {
