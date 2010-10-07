@@ -64,6 +64,7 @@ public class Interface {
             menuBar.add(stackMenu);
                 stackMenu.add(newStack);
                 stackMenu.add(loadStack);
+                    loadStack.addActionListener(new FileAction(cardDisplay.GetStack(),cardDisplay));
                 stackMenu.add(currentStack);
             menuBar.add(cardMenu);
                 cardMenu.add(newCard);

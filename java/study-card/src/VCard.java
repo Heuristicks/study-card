@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
 
+import java.lang.IndexOutOfBoundsException;
+
+
 /**
  *
  * @author Matt
@@ -12,11 +15,44 @@ import java.awt.Dimension;
 public class VCard extends JPanel {
 
     private Card thisCard;
-    public Stack theseCards;
+    private Stack theseCards;
 
     public VCard() {
-        thisCard = new Card();
-        theseCards.AddToStack(thisCard);
+        theseCards = new Stack();
+        if(theseCards.isEmpty()) {
+            thisCard = new Card();
+            theseCards.add(thisCard);
+        }
+        else {
+            int index = theseCards.indexOf(thisCard);
+            try {
+                thisCard = theseCards.get(index+1);
+            }
+            catch (IndexOutOfBoundsException e) {
+                thisCard = theseCards.get(0);
+            }
+        }
+    }
+
+    public Stack GetStack() {
+        return theseCards;
+    }
+
+    public void NextCard() {
+        if(theseCards.isEmpty()) {
+            thisCard = new Card();
+            theseCards.add(thisCard);
+        }
+        else {
+            int index = theseCards.indexOf(thisCard);
+            try {
+                thisCard = theseCards.get(index+1);
+            }
+            catch (IndexOutOfBoundsException e) {
+                thisCard = theseCards.get(0);
+            }
+        }
+        Update();
     }
 
     public Card GetCard() {
@@ -30,6 +66,7 @@ public class VCard extends JPanel {
     public void NewCard() {
         //Need a save to stack function here
         thisCard = new Card();
+        theseCards.add(thisCard);
     }
 
     private void paintBackground(Graphics g) {

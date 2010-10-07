@@ -20,6 +20,11 @@ public class Card {
         backChars = characters;
     }
 
+    public void SetCharacters(String front, String back) {
+        frontChars = front;
+        backChars = back;
+    }
+
     public String GetFrontCharacters() {
         return frontChars;
     }

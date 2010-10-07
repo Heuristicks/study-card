@@ -28,8 +28,7 @@ public class CardAction implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        card.SetFrontCharacters(fText.getText());
-        card.SetBackCharacters(bText.getText());
+        card.SetCharacters(fText.getText(),bText.getText());
         vCard.Update();
         jFrame.dispose();
     }
