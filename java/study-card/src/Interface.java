@@ -5,6 +5,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ComponentListener;
 /**
  *
  * @author Matt
@@ -19,6 +20,7 @@ public class Interface {
     private JMenuBar menuBar;
         private JMenu stackMenu;
             private JMenuItem newStack;
+            private JMenuItem saveStack;
             private JMenuItem loadStack;
             private JMenu currentStack;
         private JMenu cardMenu;
@@ -42,6 +44,7 @@ public class Interface {
                 stackMenu = new JMenu("Stack");
                     newStack = new JMenuItem("New");
                     loadStack = new JMenuItem("Load");
+                    saveStack = new JMenuItem("Save");
                     currentStack = new JMenu("Current Cards");
                 cardMenu = new JMenu("Card");
                     newCard = new JMenuItem("New");
@@ -59,12 +62,15 @@ public class Interface {
         mainWindow.setLayout(mainLayout);
 
         mainWindow.add(menuBar,BorderLayout.PAGE_START);
+        mainWindow.setJMenuBar(menuBar);
         mainWindow.add(visualFrame,BorderLayout.CENTER);
 
             menuBar.add(stackMenu);
                 stackMenu.add(newStack);
+                stackMenu.add(saveStack);
+                    saveStack.addActionListener(new FileAction(cardDisplay.GetStack(),cardDisplay, FileActionType.SAVE));
                 stackMenu.add(loadStack);
-                    loadStack.addActionListener(new FileAction(cardDisplay.GetStack(),cardDisplay));
+                    loadStack.addActionListener(new FileAction(cardDisplay.GetStack(),cardDisplay, FileActionType.OPEN));
                 stackMenu.add(currentStack);
             menuBar.add(cardMenu);
                 cardMenu.add(newCard);
@@ -85,8 +91,11 @@ public class Interface {
 
 
     private void setUpLayout() {
-        mainWindow.setPreferredSize(new Dimension(640,480));
+        Dimension d = new Dimension(640,480);
+        mainWindow.setPreferredSize(d);
+        mainWindow.setMinimumSize(d);
         mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainWindow.addComponentListener(new ResizeListener(mainWindow));
         mainWindow.addKeyListener(new KeyAction(cardDisplay));
     }
 

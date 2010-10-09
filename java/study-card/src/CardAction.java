@@ -12,22 +12,23 @@ public class CardAction implements ActionListener {
     private VCard vCard;
     private Card card;
     private JFrame jFrame;
+    private PopupType pyt;
 
     public CardAction(JTextField frontText, JTextField backText, VCard visualCard, JFrame frame, PopupType type) {
         fText = frontText;
         bText = backText;
         vCard = visualCard;
         jFrame = frame;
-        if(type == PopupType.CARD_CREATE)
-        {
+        pyt = type;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if(pyt.equals(PopupType.CARD_CREATE)) {
             vCard.NewCard();
             card = vCard.GetCard();
         }
         else
             card = vCard.GetCard();
-    }
-
-    public void actionPerformed(ActionEvent e) {
         card.SetCharacters(fText.getText(),bText.getText());
         vCard.Update();
         jFrame.dispose();

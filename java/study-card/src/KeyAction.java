@@ -12,10 +12,14 @@ public class KeyAction implements KeyListener {
     }
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == e.VK_SPACE) {
-            vCard.GetCard().Flip(!vCard.GetCard().Front());
+            vCard.GetCard().Flip(!vCard.GetCard().IsFrontSide());
             vCard.Update();
         }
         if(e.getKeyCode() == e.VK_ENTER) {
+            if(vCard.GetCard() != null) {
+                vCard.GetCard().Flip(true);
+
+            }
             vCard.NextCard();
         }
     }
