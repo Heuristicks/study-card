@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-
+import java.util.ArrayList;
 /**
  *
  * @author Matt
@@ -107,8 +107,13 @@ public class VCard extends JPanel {
                 g.drawString(text, (getWidth()/2)-(textWidth/2), getHeight()/2);
             }
             else {
-                if(textWidth <= getWidth() - 40)
-                    g.drawString(text, getX()+(getWidth()/4)+20,getHeight()/2);
+                int numberOfLines = getNumberOfLines(textWidth,getWidth()/2,20);
+                String[] splitText = splitTextForWidth(text,getWidth()/2,20,numberOfLines, fm);
+                for(int i = 0; i < splitText.length; ++i) {
+                    int x = getX()+(getWidth()/4)+20;
+                    int y = getHeight()/2 + fm.getHeight()*i;
+                    g.drawString(splitText[i],x,y);
+                }
             }
         }
         g.setColor(null);
@@ -116,6 +121,51 @@ public class VCard extends JPanel {
 
     private int getFontSize() {
         return (int)(getWidth()/25.6);
+    }
+
+    private int getYCoordForString(int value, int numberOfLines) {
+        int height = getHeight();
+        int numerator = value + 1;
+        int denominator = numberOfLines + 1;
+        int val1 = height*numerator;
+        int val2 = val1/denominator;
+        int returnValue = val2;
+        return returnValue;
+    }
+
+    private int getNumberOfLines(int textWidth, int containerWidth, int margin) {
+        int lineCount = 0;
+        while(textWidth > lineCount*(containerWidth - (margin*2))) {
+            ++lineCount;
+        }
+        return lineCount;
+    }
+
+    private String[] splitTextForWidth(String text, int containerWidth, int margin, int numberOfLines, FontMetrics fm) {
+        ArrayList<String> words = new ArrayList<String>();
+        char[] chars = text.toCharArray();
+        char[] extraChars = chars;
+        if(numberOfLines > 1) {
+            int width = 0;
+            int beginIndex = 0;
+            for(int i = 0; i < chars.length; ++i) {
+                width += fm.charWidth(chars[i]);
+                if(width > containerWidth - (margin*2)) {
+                    words.add(text.substring(beginIndex,i-1));
+                    width = 0;
+                    beginIndex = i - 1;
+                    extraChars = null;
+                }
+                else {
+                    extraChars = (text.substring(beginIndex,i+1).toCharArray());
+                }
+            }
+        }
+        if(extraChars != null)
+            words.add(new String(extraChars));
+        String[] arrayToReturn = new String[words.size()];
+        words.toArray(arrayToReturn);
+        return arrayToReturn;
     }
 
     @Override
