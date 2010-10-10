@@ -5,7 +5,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ComponentListener;
 /**
  *
  * @author Matt
@@ -22,7 +21,6 @@ public class Interface {
             private JMenuItem newStack;
             private JMenuItem saveStack;
             private JMenuItem loadStack;
-            private JMenu currentStack;
         private JMenu cardMenu;
             private JMenuItem newCard;
             private JMenuItem editCard;
@@ -30,6 +28,7 @@ public class Interface {
         private JMenu timerMenu;
             private JMenuItem startTimer;
             private JMenuItem stopTimer;
+            private JMenuItem setTimer;
         private JMenu optionMenu;
     private VCard cardDisplay;
 
@@ -45,7 +44,6 @@ public class Interface {
                     newStack = new JMenuItem("New");
                     loadStack = new JMenuItem("Load");
                     saveStack = new JMenuItem("Save");
-                    currentStack = new JMenu("Current Cards");
                 cardMenu = new JMenu("Card");
                     newCard = new JMenuItem("New");
                     editCard = new JMenuItem("Edit");
@@ -53,6 +51,7 @@ public class Interface {
                 timerMenu = new JMenu("Timer");
                     startTimer = new JMenuItem("Start");
                     stopTimer = new JMenuItem("Stop");
+                    setTimer = new JMenuItem("Settings");
                 optionMenu = new JMenu("Options");
         visualFrame = new JPanel();
             cardDisplay = new VCard();
@@ -67,20 +66,22 @@ public class Interface {
 
             menuBar.add(stackMenu);
                 stackMenu.add(newStack);
+                    newStack.addActionListener(new PopupAction(PopupType.STACK_CREATE,cardDisplay));
                 stackMenu.add(saveStack);
-                    saveStack.addActionListener(new FileAction(cardDisplay.GetStack(),cardDisplay, FileActionType.SAVE));
+                    saveStack.addActionListener(new FileAction(cardDisplay, FileActionType.SAVE));
                 stackMenu.add(loadStack);
-                    loadStack.addActionListener(new FileAction(cardDisplay.GetStack(),cardDisplay, FileActionType.OPEN));
-                stackMenu.add(currentStack);
+                    loadStack.addActionListener(new FileAction(cardDisplay, FileActionType.OPEN));
             menuBar.add(cardMenu);
                 cardMenu.add(newCard);
                     newCard.addActionListener(new PopupAction(PopupType.CARD_CREATE,cardDisplay));
                 cardMenu.add(editCard);
                     editCard.addActionListener(new PopupAction(PopupType.CARD_EDIT,cardDisplay));
                 cardMenu.add(deleteCard);
+                    deleteCard.addActionListener(new PopupAction(PopupType.CARD_DELETE,cardDisplay));
             menuBar.add(timerMenu);
                 timerMenu.add(startTimer);
                 timerMenu.add(stopTimer);
+                timerMenu.add(setTimer);
             menuBar.add(optionMenu);
 
         mainLayout = new BorderLayout();

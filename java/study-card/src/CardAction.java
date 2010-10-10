@@ -27,7 +27,7 @@ public class CardAction implements ActionListener {
             vCard.NewCard();
             card = vCard.GetCard();
         }
-        else
+        else if(pyt.equals(PopupType.CARD_EDIT))
             card = vCard.GetCard();
         card.SetCharacters(fText.getText(),bText.getText());
         vCard.Update();

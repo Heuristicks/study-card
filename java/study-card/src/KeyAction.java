@@ -12,8 +12,11 @@ public class KeyAction implements KeyListener {
     }
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == e.VK_SPACE) {
-            vCard.GetCard().Flip(!vCard.GetCard().IsFrontSide());
-            vCard.Update();
+            Card card;
+            if((card = vCard.GetCard()) != null) {
+                card.Flip(!card.IsFrontSide());
+                vCard.Update();
+            }
         }
         if(e.getKeyCode() == e.VK_ENTER) {
             if(vCard.GetCard() != null) {

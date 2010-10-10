@@ -1,7 +1,6 @@
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.*;
+
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,9 +19,10 @@ public class FileAction implements ActionListener {
     private VCard vCard;
     private FileActionType fileActionType;
 
-    public FileAction(Stack stack, VCard vcard, FileActionType fat) {
+    public FileAction(VCard vcard, FileActionType fat) {
         fc = new JFileChooser();
-        stackToUse = stack;
+        fc.setFileFilter(new TextFileFilter());
+        stackToUse = vcard.GetStack();
         vCard = vcard;
         fileActionType = fat;
     }
@@ -43,7 +43,7 @@ public class FileAction implements ActionListener {
             }
         }
         else {
-            int returnVal = fc.showOpenDialog(null);
+            int returnVal = fc.showSaveDialog(null);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
                     stackToUse.Save(fc.getSelectedFile());

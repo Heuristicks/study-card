@@ -1,13 +1,8 @@
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Dimension;
-
-import java.lang.IndexOutOfBoundsException;
-
 
 /**
  *
@@ -16,6 +11,7 @@ import java.lang.IndexOutOfBoundsException;
 public class VCard extends JPanel {
 
     private Card thisCard;
+
     private Stack thisStack;
 
     public VCard() {
@@ -61,8 +57,26 @@ public class VCard extends JPanel {
     }
 
     public void NewCard() {
-        thisStack.add(new Card());
-        thisCard = thisStack.get(thisStack.size()-1);
+        int index = (thisCard != null) ? thisStack.indexOf(thisCard):0;
+        thisStack.add(index,new Card());
+        thisCard = thisStack.get(index);
+        Update();
+    }
+
+    public void DeleteCurrentCard() {
+        int index = thisStack.indexOf(thisCard);
+        thisStack.remove(index);
+        thisCard = null;
+        for(int i = 0; i < thisStack.size(); ++i) {
+            if((thisCard = thisStack.get(index-i)) != null)
+                break;
+        }
+        Update();
+    }
+
+    public void DeleteCurrentStack() {
+        thisStack.clear();
+        thisCard = null;
         Update();
     }
 
@@ -72,7 +86,7 @@ public class VCard extends JPanel {
     }
 
     private void paintCard(Graphics g) {
-        Font font = new Font("Verdana", Font.PLAIN, getFontSize());
+        Font font = new Font("Arial", Font.PLAIN, getFontSize());
         FontMetrics fm = g.getFontMetrics(font);
         g.setColor(Color.white);
         g.fillRect(getX()+(getWidth()/4), getY()+(getHeight()/4), getWidth()/2, getHeight()/2);
