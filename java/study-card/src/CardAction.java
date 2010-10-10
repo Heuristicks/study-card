@@ -1,6 +1,7 @@
 import java.awt.event.*;
 import javax.swing.JTextField;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Matt
@@ -23,6 +24,16 @@ public class CardAction implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        final String[] text = { fText.getText(), bText.getText() };
+        for(int i = 0; i < text.length; ++i) {
+            if(!isValidText(text[i])) {
+                JOptionPane.showMessageDialog(vCard.getParent(),
+                "The text that you have entered for the card is invalid.",
+                "Invalid text",
+                JOptionPane.OK_OPTION);
+                return;
+            }
+        }
         if(pyt.equals(PopupType.CARD_CREATE)) {
             vCard.NewCard();
             card = vCard.GetCard();
@@ -34,4 +45,11 @@ public class CardAction implements ActionListener {
         jFrame.dispose();
     }
 
+    private boolean isValidText(String text) {
+        if(text.length() > 250)
+            return false;
+        if(text.contains("$") || text.contains("@"))
+            return false;
+        return true;
+    }
 }

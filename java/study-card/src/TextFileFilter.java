@@ -27,7 +27,7 @@ public class TextFileFilter extends FileFilter {
     }
     
     public String getDescription() {
-        return "Text";
+        return ".txt";
     }
     
     private static String getExtension(File f) {

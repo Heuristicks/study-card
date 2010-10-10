@@ -2,6 +2,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.IOException;
  *
  * @author Matt
  */
-enum PopupType {CARD_CREATE, CARD_EDIT, CARD_DELETE, STACK_CREATE};
+enum PopupType {CARD_CREATE, CARD_EDIT, CARD_DELETE, STACK_CREATE, SET_FONT};
 
 //Needs work - action event not being registered (or at least, no popup) - will debug later
 public class PopupAction implements ActionListener {
@@ -87,6 +88,13 @@ public class PopupAction implements ActionListener {
                 }
             }
             vCard.DeleteCurrentStack();
+        }
+        else if(put.equals(PopupType.SET_FONT)) {
+            Object[] fonts = { "Arial", "Comic Sans", "Courier", "Georgia", "Helvetica", "Lucida", "Tahoma", "Times New Roman", "Verdana"};
+            String fontName = (String)JOptionPane.showInputDialog(vCard.getParent(),"Choose a font","Font Selection",JOptionPane.PLAIN_MESSAGE,null,fonts,"Arial");
+            if(fontName != null) {
+                vCard.SetUserFont(fontName);
+            }
         }
         if(thisWindow != null) {
             thisWindow.setVisible(true);

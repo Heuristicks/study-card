@@ -30,6 +30,7 @@ public class Interface {
             private JMenuItem stopTimer;
             private JMenuItem setTimer;
         private JMenu optionMenu;
+            private JMenuItem setFont;
     private VCard cardDisplay;
 
     public Interface() {
@@ -53,6 +54,7 @@ public class Interface {
                     stopTimer = new JMenuItem("Stop");
                     setTimer = new JMenuItem("Settings");
                 optionMenu = new JMenu("Options");
+                    setFont = new JMenuItem("Font");
         visualFrame = new JPanel();
             cardDisplay = new VCard();
 
@@ -83,6 +85,8 @@ public class Interface {
                 timerMenu.add(stopTimer);
                 timerMenu.add(setTimer);
             menuBar.add(optionMenu);
+                optionMenu.add(setFont);
+                    setFont.addActionListener(new PopupAction(PopupType.SET_FONT,cardDisplay));
 
         mainLayout = new BorderLayout();
         visualFrame.setLayout(mainLayout);

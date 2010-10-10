@@ -32,7 +32,13 @@ public class FileAction implements ActionListener {
             int returnVal = fc.showOpenDialog(null);
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
+                    vCard.DeleteCurrentCard();
                     stackToUse.Load(fc.getSelectedFile());
+                    if(vCard.GetCard() != null) {
+                        if(!vCard.GetStack().isEmpty()) {
+                            vCard.SetCurrentCard(vCard.GetStack(),0);
+                        }
+                    }
                 }
                 catch (FileNotFoundException fnfe) {
                     return;
