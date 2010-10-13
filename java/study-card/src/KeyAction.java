@@ -24,7 +24,7 @@ public class KeyAction implements KeyListener {
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_UP: {
                 if(vCard.GetCard() != null) {
-                    vCard.GetCard().Flip(true);
+                    vCard.GetCard().Flip(vCard.GetCurrentCardSide());
                 }
                 vCard.NextCard(true);
                 break;
@@ -33,7 +33,7 @@ public class KeyAction implements KeyListener {
             case KeyEvent.VK_LEFT: 
             case KeyEvent.VK_DOWN: {
                 if(vCard.GetCard() != null) {
-                    vCard.GetCard().Flip(true);
+                    vCard.GetCard().Flip(vCard.GetCurrentCardSide());
 
                 }
                 vCard.NextCard(false);

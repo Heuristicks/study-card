@@ -16,6 +16,8 @@ public class VCard extends JPanel {
     private Card thisCard;
     private Stack thisStack;
 
+    private boolean currentCardSide;
+
     private String userFont;
     private boolean randomOrder;
     private Random r;
@@ -34,6 +36,7 @@ public class VCard extends JPanel {
         }
         randomOrder = false;
         r = new Random();
+        currentCardSide = true;
     }
 
     public Stack GetStack() {
@@ -69,6 +72,18 @@ public class VCard extends JPanel {
 
     public Card GetCard() {
         return thisCard;
+    }
+
+    public boolean GetCurrentCardSide() {
+        return currentCardSide;
+    }
+
+    public void SetCurrentCardSide(boolean front) {
+        for(int i = 0; i < thisStack.size(); ++i) {
+            thisStack.get(i).Flip(front);
+        }
+        currentCardSide = front;
+        Update();
     }
 
     public void SetCurrentCard(Stack stack, int index) {

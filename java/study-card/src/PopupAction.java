@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @author Matt
  */
-enum PopupType {CARD_CREATE, CARD_EDIT, CARD_DELETE, STACK_CREATE, SET_FONT/*, TIMER_OPTIONS*/};
+enum PopupType {CARD_CREATE, CARD_EDIT, CARD_DELETE, STACK_CREATE, SET_FONT, NONPOP_RANDOM, NONPOP_INVERSE/*, TIMER_OPTIONS*/};
 
 //Needs work - action event not being registered (or at least, no popup) - will debug later
 public class PopupAction implements ActionListener, ItemListener {
@@ -109,6 +109,11 @@ public class PopupAction implements ActionListener, ItemListener {
     }
 
     public void itemStateChanged(ItemEvent e) {
-        vCard.SetOrder(e.getStateChange() == ItemEvent.SELECTED);
+        if(put.equals(PopupType.NONPOP_RANDOM)) {
+            vCard.SetOrder(e.getStateChange() == ItemEvent.SELECTED);
+        }
+        else if(put.equals(PopupType.NONPOP_INVERSE)) {
+            vCard.SetCurrentCardSide(e.getStateChange() == ItemEvent.DESELECTED);
+        }
     }
 }

@@ -8,7 +8,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+
+import java.awt.IllegalComponentStateException;
 /**
  *
  * @author Matt
@@ -37,7 +39,8 @@ public class Interface {
         private JMenu optionMenu;
             private JMenuItem setFont;
             private JCheckBoxMenuItem randomSequence;
-            private JMenuItem setFullScreen;
+            private JCheckBoxMenuItem inverseCardText;
+            private JCheckBoxMenuItem setFullScreen;
     private VCard cardDisplay;
         //private MyTimer timer;
 
@@ -47,6 +50,7 @@ public class Interface {
     }
 
     private void setUpComponents() {
+        graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         mainWindow = new JFrame("Flashflip");
             menuBar = new JMenuBar();
                 stackMenu = new JMenu("Stack");
@@ -64,7 +68,8 @@ public class Interface {
                 optionMenu = new JMenu("Options");
                     setFont = new JMenuItem("Font");
                     randomSequence = new JCheckBoxMenuItem("Random Order");
-                    setFullScreen = new JMenuItem("Fullscreen");
+                    inverseCardText = new JCheckBoxMenuItem("Swap Text");
+                    setFullScreen = new JCheckBoxMenuItem("Fullscreen");
         visualFrame = new JPanel();
             cardDisplay = new VCard();
                 //timer = new MyTimer();
@@ -102,16 +107,27 @@ public class Interface {
                 optionMenu.add(setFont);
                     setFont.addActionListener(new PopupAction(PopupType.SET_FONT,cardDisplay));
                 optionMenu.add(randomSequence);
-                    randomSequence.addItemListener(new PopupAction(null,cardDisplay));
-                optionMenu.add(setFullScreen);
+                    randomSequence.addItemListener(new PopupAction(PopupType.NONPOP_RANDOM,cardDisplay));
+                /*optionMenu.add(setFullScreen);
                     setFullScreen.setMnemonic(KeyEvent.VK_F11);
+                    setFullScreen.addItemListener(new ItemListener() {
+                        public void itemStateChanged(ItemEvent e) throws IllegalComponentStateException {
+                            boolean isFullScreen = e.getStateChange() == ItemEvent.SELECTED;
+                            graphicsDevice.setFullScreenWindow((isFullScreen) ? mainWindow:null);
+                            if(!mainWindow.isDisplayable())
+                                mainWindow.setUndecorated(isFullScreen);
+                            mainWindow.setResizable(!isFullScreen);
+                        }
+                    });*/
+                optionMenu.add(inverseCardText);
+                    inverseCardText.addItemListener(new PopupAction(PopupType.NONPOP_INVERSE,cardDisplay));
+
 
         mainLayout = new BorderLayout();
         visualFrame.setLayout(mainLayout);
         
         visualFrame.add(cardDisplay,BorderLayout.CENTER);
         //visualFrame.add(timer,BorderLayout.NORTH);
-        graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     }
 
 
