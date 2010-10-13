@@ -3,8 +3,12 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JCheckBoxMenuItem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyEvent;
 /**
  *
  * @author Matt
@@ -15,6 +19,7 @@ public class Interface {
     private JPanel visualFrame;
 
     private BorderLayout mainLayout;
+    private GraphicsDevice graphicsDevice;
 
     private JMenuBar menuBar;
         private JMenu stackMenu;
@@ -25,13 +30,16 @@ public class Interface {
             private JMenuItem newCard;
             private JMenuItem editCard;
             private JMenuItem deleteCard;
-        private JMenu timerMenu;
+        /*private JMenu timerMenu;
             private JMenuItem startTimer;
             private JMenuItem stopTimer;
-            private JMenuItem setTimer;
+            private JMenuItem setTimer;*/
         private JMenu optionMenu;
             private JMenuItem setFont;
+            private JCheckBoxMenuItem randomSequence;
+            private JMenuItem setFullScreen;
     private VCard cardDisplay;
+        //private MyTimer timer;
 
     public Interface() {
         setUpComponents();
@@ -49,14 +57,17 @@ public class Interface {
                     newCard = new JMenuItem("New");
                     editCard = new JMenuItem("Edit");
                     deleteCard = new JMenuItem("Delete Current");
-                timerMenu = new JMenu("Timer");
+                /*timerMenu = new JMenu("Timer");
                     startTimer = new JMenuItem("Start");
                     stopTimer = new JMenuItem("Stop");
-                    setTimer = new JMenuItem("Settings");
+                    setTimer = new JMenuItem("Settings");*/
                 optionMenu = new JMenu("Options");
                     setFont = new JMenuItem("Font");
+                    randomSequence = new JCheckBoxMenuItem("Random Order");
+                    setFullScreen = new JMenuItem("Fullscreen");
         visualFrame = new JPanel();
             cardDisplay = new VCard();
+                //timer = new MyTimer();
 
         mainLayout = new BorderLayout();
 
@@ -80,18 +91,27 @@ public class Interface {
                     editCard.addActionListener(new PopupAction(PopupType.CARD_EDIT,cardDisplay));
                 cardMenu.add(deleteCard);
                     deleteCard.addActionListener(new PopupAction(PopupType.CARD_DELETE,cardDisplay));
-            menuBar.add(timerMenu);
+            /*menuBar.add(timerMenu);
                 timerMenu.add(startTimer);
+                    startTimer.addActionListener(new TimerAction(TimerActionType.START,timer));
                 timerMenu.add(stopTimer);
+                    stopTimer.addActionListener(new TimerAction(TimerActionType.STOP,timer));
                 timerMenu.add(setTimer);
+                    setTimer.addActionListener(new PopupAction(PopupType.TIMER_OPTIONS,cardDisplay));*/
             menuBar.add(optionMenu);
                 optionMenu.add(setFont);
                     setFont.addActionListener(new PopupAction(PopupType.SET_FONT,cardDisplay));
+                optionMenu.add(randomSequence);
+                    randomSequence.addItemListener(new PopupAction(null,cardDisplay));
+                optionMenu.add(setFullScreen);
+                    setFullScreen.setMnemonic(KeyEvent.VK_F11);
 
         mainLayout = new BorderLayout();
         visualFrame.setLayout(mainLayout);
         
         visualFrame.add(cardDisplay,BorderLayout.CENTER);
+        //visualFrame.add(timer,BorderLayout.NORTH);
+        graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     }
 
 
@@ -100,7 +120,7 @@ public class Interface {
         mainWindow.setPreferredSize(d);
         mainWindow.setMinimumSize(d);
         mainWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        mainWindow.addComponentListener(new ResizeListener(mainWindow));
+        mainWindow.addComponentListener(new ResizeListener(mainWindow,graphicsDevice));
         mainWindow.addKeyListener(new KeyAction(cardDisplay));
     }
 

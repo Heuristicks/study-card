@@ -25,7 +25,6 @@ public class KeyAction implements KeyListener {
             case KeyEvent.VK_UP: {
                 if(vCard.GetCard() != null) {
                     vCard.GetCard().Flip(true);
-
                 }
                 vCard.NextCard(true);
                 break;

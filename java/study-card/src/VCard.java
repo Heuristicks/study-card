@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
+import java.util.Random;
 /**
  *
  * @author Matt
@@ -16,6 +17,8 @@ public class VCard extends JPanel {
     private Stack thisStack;
 
     private String userFont;
+    private boolean randomOrder;
+    private Random r;
 
     public VCard() {
         thisStack = new Stack();
@@ -29,10 +32,17 @@ public class VCard extends JPanel {
                 thisCard = thisStack.get(0);
             }
         }
+        randomOrder = false;
+        r = new Random();
     }
 
     public Stack GetStack() {
         return thisStack;
+    }
+
+    public void SetCurrentStack(Stack stack) {
+        thisStack = stack;
+        Update();
     }
 
     public void NextCard(boolean forward) {
@@ -40,12 +50,18 @@ public class VCard extends JPanel {
             return;
         }
         else {
-            int index = thisStack.indexOf(thisCard);
-            try {
-                thisCard = thisStack.get(index+(forward ? 1:-1));
+            if(!randomOrder) {
+                int index = thisStack.indexOf(thisCard);
+                try {
+                    thisCard = thisStack.get(index+(forward ? 1:-1));
+                }
+                catch (IndexOutOfBoundsException e) {
+                    thisCard = forward ? thisStack.get(0):thisStack.get(thisStack.size()-1);
+                }
             }
-            catch (IndexOutOfBoundsException e) {
-                thisCard = forward ? thisStack.get(0):thisStack.get(thisStack.size()-1);
+            else {
+                int index = r.nextInt(thisStack.size());
+                thisCard = thisStack.get(index);
             }
         }
         Update();
@@ -60,14 +76,22 @@ public class VCard extends JPanel {
             thisCard = stack.get(index);
         }
     }
+
+    public void SetOrder(boolean random) { //True = random order, else sequential according to file
+        randomOrder = random;
+    }
     
     public void Update() {
         repaint();
     }
 
     public void NewCard() {
-        int index = (thisCard != null) ? thisStack.indexOf(thisCard):0;
-        thisStack.add(index,new Card());
+        int index = (thisCard != null) ? thisStack.indexOf(thisCard)+1:0;
+        Card newCard = new Card();
+        if(index > thisStack.size())
+            thisStack.add(newCard);
+        else
+            thisStack.add(index,newCard);
         thisCard = thisStack.get(index);
         Update();
     }
@@ -113,7 +137,7 @@ public class VCard extends JPanel {
     }
 
     private void drawCard(Graphics g, boolean sideOfCard) {
-        int shadow = sideOfCard ? (getWidth()/64):-(getWidth()/64);
+        int shadow = sideOfCard ? (getWidth()/128):-(getWidth()/128);
         g.setColor(Color.black);
         g.fillRect(getX()+(getWidth()/4)+shadow, getY()+(getHeight()/4)+shadow, getWidth()/2, getHeight()/2);
         g.setColor(Color.white);
@@ -126,7 +150,7 @@ public class VCard extends JPanel {
         g.setFont(font);
         g.setColor(Color.black);
         String text = null;
-        if(thisCard.IsFrontSide()) {
+        if(sideOfCard) {
             text = thisCard.GetFrontCharacters();
         }
         else {

@@ -70,7 +70,7 @@ public class Stack extends ArrayList<Card> {
             return charsToParse.split("[$]");
     }
 
-    private void SetSize(int size) {
+    public void SetSize(int size) {
         int thisSize = size();
         if(size > thisSize) {
             int cardsToAdd = size - thisSize;

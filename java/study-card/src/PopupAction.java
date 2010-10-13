@@ -11,10 +11,10 @@ import java.io.IOException;
  *
  * @author Matt
  */
-enum PopupType {CARD_CREATE, CARD_EDIT, CARD_DELETE, STACK_CREATE, SET_FONT};
+enum PopupType {CARD_CREATE, CARD_EDIT, CARD_DELETE, STACK_CREATE, SET_FONT/*, TIMER_OPTIONS*/};
 
 //Needs work - action event not being registered (or at least, no popup) - will debug later
-public class PopupAction implements ActionListener {
+public class PopupAction implements ActionListener, ItemListener {
 
     private JFrame thisWindow;
 
@@ -64,26 +64,28 @@ public class PopupAction implements ActionListener {
             }
         }
         else if(put.equals(PopupType.STACK_CREATE)) {
-            int n = JOptionPane.showConfirmDialog(vCard.getParent(),
-                                    "Would you like to save the current stack?",
-                                    "Please confirm",
-                                    JOptionPane.YES_NO_OPTION);
-            
-            if (n == JOptionPane.YES_OPTION) {
-                JFileChooser fc = new JFileChooser();
-                fc.setFileFilter(new TextFileFilter());
-                
-                int returnVal = fc.showSaveDialog(null);
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        Stack stackToUse = vCard.GetStack();
-                        stackToUse.Save(fc.getSelectedFile());
-                    }
-                    catch (FileNotFoundException fnfe) {
-                        return;
-                    }
-                    catch (IOException fnfe) {
-                        return;
+            if(!vCard.GetStack().isEmpty()) {
+                int n = JOptionPane.showConfirmDialog(vCard.getParent(),
+                                        "Would you like to save the current stack?",
+                                        "Please confirm",
+                                        JOptionPane.YES_NO_OPTION);
+
+                if (n == JOptionPane.YES_OPTION) {
+                    JFileChooser fc = new JFileChooser();
+                    fc.setFileFilter(new TextFileFilter());
+
+                    int returnVal = fc.showSaveDialog(null);
+                    if(returnVal == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            Stack stackToUse = vCard.GetStack();
+                            stackToUse.Save(fc.getSelectedFile());
+                        }
+                        catch (FileNotFoundException fnfe) {
+                            return;
+                        }
+                        catch (IOException fnfe) {
+                            return;
+                        }
                     }
                 }
             }
@@ -96,10 +98,17 @@ public class PopupAction implements ActionListener {
                 vCard.SetUserFont(fontName);
             }
         }
+        /*else if(put.equals(PopupType.TIMER_OPTIONS)) {
+            MyTimer timer = (MyTimer)(vCard.getParent().getComponent(1));
+        }*/
         if(thisWindow != null) {
             thisWindow.setVisible(true);
             thisWindow.setSize(new Dimension(200,100));
             thisWindow.setLocationRelativeTo(vCard);
         }
+    }
+
+    public void itemStateChanged(ItemEvent e) {
+        vCard.SetOrder(e.getStateChange() == ItemEvent.SELECTED);
     }
 }
