@@ -3,6 +3,13 @@ import java.awt.event.*;
  *
  * @author Matt
  */
+
+/*
+ * KeyListener for the main window of this program
+ * -Space Bar: Flips card to oppposite of current side
+ * -Enter/Up Arrow/Right Arrow: Displays the next card (if random card order setting is off, will show next card in sequence)
+ * -Backspace/Down Arrow/Left Arrow: Displays the previous card (if random card order setting is off, will show previous card in sequence)
+ */
 public class KeyAction implements KeyListener {
 
     private VCard vCard;

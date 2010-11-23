@@ -2,6 +2,10 @@
  *
  * @author Matt
  */
+
+/*
+ * More of a structure class
+ */
 public class Card {
 
     /* Variable that dynamically holds the text on the front of the card */

@@ -4,13 +4,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JSeparator;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.*;
+import java.awt.Point;
+import java.awt.Rectangle;
 
-import java.awt.IllegalComponentStateException;
 /**
  *
  * @author Matt
@@ -106,6 +108,7 @@ public class Interface {
             menuBar.add(optionMenu);
                 optionMenu.add(setFont);
                     setFont.addActionListener(new PopupAction(PopupType.SET_FONT,cardDisplay));
+                optionMenu.add(new JSeparator());
                 optionMenu.add(randomSequence);
                     randomSequence.addItemListener(new PopupAction(PopupType.NONPOP_RANDOM,cardDisplay));
                 /*optionMenu.add(setFullScreen);

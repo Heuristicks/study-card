@@ -1,8 +1,19 @@
+import java.awt.AlphaComposite;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.Random;
 /**
@@ -22,6 +33,8 @@ public class VCard extends JPanel {
     private boolean randomOrder;
     private Random r;
 
+    private JLabel currentCardLabel;
+
     public VCard() {
         thisStack = new Stack();
         if(thisStack.isEmpty()) {}
@@ -37,6 +50,11 @@ public class VCard extends JPanel {
         randomOrder = false;
         r = new Random();
         currentCardSide = true;
+        currentCardLabel = new JLabel();
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.NORTHEAST;
+        this.add(currentCardLabel,c);
     }
 
     public Stack GetStack() {
@@ -97,7 +115,10 @@ public class VCard extends JPanel {
     }
     
     public void Update() {
+        int size = thisStack.size();
+        int index = thisStack.indexOf(thisCard) + 1;
         repaint();
+        currentCardLabel.setText(Integer.toString(size));
     }
 
     public void NewCard() {
@@ -154,16 +175,29 @@ public class VCard extends JPanel {
     private void drawCard(Graphics g, boolean sideOfCard) {
         int shadow = sideOfCard ? (getWidth()/128):-(getWidth()/128);
         g.setColor(Color.black);
-        g.fillRect(getX()+(getWidth()/4)+shadow, getY()+(getHeight()/4)+shadow, getWidth()/2, getHeight()/2);
+        g.fillRect(getX()+getCardX()+shadow, getY()+getCardY()+shadow, getCardWidth(), getCardHeight());
+        Rectangle card = new Rectangle(getX()+getCardX(), getY()+getCardY(), getCardWidth(), getCardHeight());
+
+        /*Graphics2D g2 = (Graphics2D) g;
+        //Composite c = g2.getComposite();
+        //g2.setComposite(AlphaComposite.SrcOver.derive(1.0f));
+        g.drawImage(createDropShadow(card,shadow), getX()+getCardX()+shadow, getY()+getCardY()+shadow, null);*/
         g.setColor(Color.white);
-        g.fillRect(getX()+(getWidth()/4), getY()+(getHeight()/4), getWidth()/2, getHeight()/2);
+        fillRect(g,card);
+    }
+
+    private void fillRect(Graphics g, Rectangle r) {
+        g.fillRect(r.x,r.y, r.width, r.height);
     }
 
     private void drawText(Graphics g, boolean sideOfCard) {
+        Graphics2D g2d = ((Graphics2D)g);
+        RenderingHints antiAlias = g2d.getRenderingHints();
+        antiAlias.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         Font font = (new Font((userFont != null) ? (userFont):("Arial"), Font.PLAIN, getFontSize()));
-        FontMetrics fm = g.getFontMetrics(font);
-        g.setFont(font);
-        g.setColor(Color.black);
+        FontMetrics fm = g2d.getFontMetrics(font);
+        g2d.setFont(font);
+        g2d.setColor(Color.black);
         String text = null;
         if(sideOfCard) {
             text = thisCard.GetFrontCharacters();
@@ -173,20 +207,36 @@ public class VCard extends JPanel {
         }
         if(text != null) {
             int textWidth = fm.stringWidth(text);
-            if(textWidth <= (getWidth()/4 - 20)) {
-                g.drawString(text, (getWidth()/2)-(textWidth/2), getHeight()/2);
+            if(textWidth <= (getCardX() - 20)) {
+                g2d.drawString(text, (getWidth()/2)-(textWidth/2), getHeight()/2);
             }
             else {
-                int numberOfLines = getNumberOfLines(textWidth,getWidth()/2,20);
-                String[] splitText = splitTextForWidth(text,getWidth()/2,20,numberOfLines, fm);
+                int numberOfLines = getNumberOfLines(textWidth,getCardWidth(),20);
+                String[] splitText = splitTextForWidth(text,getCardWidth(),20,numberOfLines, fm);
                 for(int i = 0; i < splitText.length; ++i) {
-                    int x = getX()+(getWidth()/4)+20;
+                    int x = getX()+(getCardX())+20;
                     int y = getHeight()/2 + fm.getHeight()*i;
-                    g.drawString(splitText[i],x,y);
+                    g2d.drawString(splitText[i],x,y);
                 }
             }
         }
 
+    }
+
+    private int getCardX() {
+        return getWidth()/4;
+    }
+
+    private int getCardY() {
+        return getHeight()/4;
+    }
+
+    private int getCardWidth() {
+        return getWidth()/2;
+    }
+
+    private int getCardHeight() {
+        return getHeight()/2;
     }
 
     private int getFontSize() {
@@ -231,6 +281,7 @@ public class VCard extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         paintBackground(g);
         paintCard(g);
     }

@@ -15,7 +15,7 @@ public class CardAction implements ActionListener {
     private JFrame jFrame;
     private PopupType pyt;
 
-    public CardAction(JTextField frontText, JTextField backText, VCard visualCard, JFrame frame, PopupType type) {
+    CardAction(JTextField frontText, JTextField backText, VCard visualCard, JFrame frame, PopupType type) {
         fText = frontText;
         bText = backText;
         vCard = visualCard;
